@@ -1,0 +1,47 @@
+﻿@model minh.Models.Cart
+@using Newtonsoft.Json
+<div class="list-product">
+    @foreach (var item in ViewBag.product)
+    {
+        <div class="product">
+            <img src="~/images/@item.ProfilePicture" class="img-responsive rounded-image" height="100" width="100" />
+            <span class="title">@item.Name</span>
+            <div class="buttons">
+                <a asp-controller="Carts" asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Details</a>
+                <a asp-controller="Carts" asp-action="addCart" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Add order</a>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .list-product {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .product {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+    }
+
+        .product img {
+            margin-bottom: 10px;
+        }
+
+    .title {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .buttons {
+        margin-top: 10px;
+    }
+
+        .buttons .btn {
+            margin-right: 5px;
+        }
+</style>

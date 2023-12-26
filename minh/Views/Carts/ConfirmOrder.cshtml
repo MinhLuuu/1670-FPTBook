@@ -1,0 +1,90 @@
+﻿@model minh.Models.Order
+
+@{
+    ViewData["Title"] = "Your Order";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <!-- Link Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <style>
+        .rounded-image {
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Order Information</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="list-cart">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Title</th>
+                                <th>Image</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.carts)
+                            {
+                                double itemTotalPrice = item.Book.Price * item.Quantity;
+                                <tr>
+                                    <td>@item.Book.Name</td>
+                                    <td><img src="~/images/@item.Book.ProfilePicture" class="rounded-image" height="100" width="100" /></td>
+                                    <td>@item.Quantity</td>
+                                    <td>@item.Book.Price</td>
+                                    <td id="total@(item.Book.Id)">@(item.Book.Price * item.Quantity)</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr class="total">
+                                <td colspan="4"></td>
+                                <td>
+                                    @if (ViewBag.carts != null && ViewBag.carts.Count > 0)
+                                    {
+                                        int overallTotalPrice = 0;
+                                        foreach (var item in ViewBag.carts)
+                                        {
+                                            overallTotalPrice += item.Book.Price * item.Quantity;
+                                        }
+                                        <p>Total: @overallTotalPrice</p>
+                                    }
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card-body">
+                    <form asp-controller="Carts" asp-action="Confirm" class="border p-4 rounded">
+                        <h2 class="text-center mb-4">Enter Your Information</h2>
+                        <div class="form-group">
+                            <label asp-for="FullName">Full Name</label>
+                            <input asp-for="FullName" class="form-control" placeholder="Enter your full name" required>
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Address">Address</label>
+                            <input asp-for="Address" class="form-control" placeholder="Enter your address" required>
+                            <span asp-validation-for="Address" class="text-danger"></span>
+
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

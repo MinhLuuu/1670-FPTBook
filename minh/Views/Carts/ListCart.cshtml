@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "ListCart";
+}
+
+<h1>List Cart</h1>
+
+<div class="list-cart">
+    <form asp-controller="Carts" asp-action="updateCart" method="post">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>STT</th>
+                    <th>Name</th>
+                    <th>Image</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int STT = 0;
+                }
+                @foreach (var item in ViewBag.carts)
+                {
+                    STT++;
+                    string txtclass = "quantity" + item.Book.Id;
+                    <tr>
+                        <td>@STT</td>
+                        <td>@item.Book.Name</td>
+                        <td><img src="~/images/@item.Book.ProfilePicture" class="rounded-image" height="100" width="100" /></td>
+                        <td>
+                            <input type="number" name="quantity" @*class="form-control @txtclass"*@ value="@item.Quantity" />
+                        </td>
+                        <td>@item.Book.Price</td>
+                        <td id="total@(item.Book.Id)">@(item.Book.Price * item.Quantity)</td>
+
+                        <td>
+                            <button type="submit" name="id" value="@item.Book.Id" class="btn btn-primary">Update</button>
+                        </td>
+                        <td>
+                            <a asp-controller="Carts" asp-action="deleteCart" asp-route-id="@item.Book.Id" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="row justify-content-between">
+            <div class="col-md-6">
+                <a asp-controller="Carts" asp-action="Index" class="btn btn-secondary mb-2">Continue Shopping</a>
+            </div>
+            <div class="col-md-6 text-md-right">
+                <a asp-controller="Carts" asp-action="ConfirmOrder" class="btn btn-success mb-2">Confirm</a>
+            </div>
+        </div>
+    </form>
+</div>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
